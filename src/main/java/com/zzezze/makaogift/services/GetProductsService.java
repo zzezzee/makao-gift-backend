@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductService {
+public class GetProductsService {
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public GetProductsService(ProductRepository productRepository) {
 
         this.productRepository = productRepository;
     }
