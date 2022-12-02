@@ -6,31 +6,31 @@ import com.zzezze.makaogift.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class ProductServiceTest {
-
+class GetProductServiceTest {
     ProductRepository productRepository;
-    ProductService productService;
+    GetProductService getProductService;
 
     @BeforeEach
     void setup() {
         productRepository = mock(ProductRepository.class);
-        productService = new ProductService(productRepository);
+        getProductService = new GetProductService(productRepository);
     }
 
     @Test
-    void list() {
-        List<Product> products = List.of(Product.fake());
+    void item() {
+        Product product = Product.fake();
 
-        given(productRepository.findAll()).willReturn(products);
+        given(productRepository.findById(1L)).willReturn(Optional.of(product));
 
-        List<ProductDto> productDtos = productService.list();
+        ProductDto productDto = getProductService.item(1L);
 
-        assertThat(productDtos).hasSize(1);
+        assertThat(productDto).isNotNull();
     }
 }
