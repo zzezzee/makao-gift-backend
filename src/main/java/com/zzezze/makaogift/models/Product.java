@@ -4,12 +4,13 @@ import com.zzezze.makaogift.dtos.ProductDto;
 import com.zzezze.makaogift.dtos.ProductsDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -32,6 +33,22 @@ public class Product {
         this.maker = maker;
         this.description = description;
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMaker() {
+        return maker;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public static Product fake() {
