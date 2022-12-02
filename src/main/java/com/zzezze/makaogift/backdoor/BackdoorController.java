@@ -19,14 +19,12 @@ public class BackdoorController {
 
     @GetMapping("/setup-database")
     public String setupDatabase() {
-        // 1. 기존 데이터 삭제
-        // 2. 내가 원하는 데이터로 초기화
-
         jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.execute("DELETE FROM ORDERTABLE");
 
         jdbcTemplate.update(
                 "INSERT INTO product(" +
-                        "id,  name, price, maker, description, image)" +
+                        "id, name, price, maker, description, image)" +
                         " VALUES(1, ?, ?, ?, ?, ?)",
                 "파스퇴르 전용목장 1급A 파스퇴르 우유 200ml (멸균)(36개)",
                 25710,
