@@ -15,7 +15,6 @@ public class GetProductService {
     }
 
     public ProductDto item(Long id) {
-        System.out.println(id);
         Product product = productRepository.findById(id)
                 .orElseThrow(ProductNotFound::new);
 

@@ -1,35 +1,37 @@
 package com.zzezze.makaogift.services;
 
-import com.zzezze.makaogift.dtos.OrderListDto;
+import com.zzezze.makaogift.dtos.OrderItemDto;
 import com.zzezze.makaogift.models.Order;
 import com.zzezze.makaogift.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class GetOrdersServiceTest {
-    private GetOrdersService getOrdersService;
+class GetOrderServiceTest {
     private OrderRepository orderRepository;
+    private GetOrderService getOrderService;
 
     @BeforeEach
     void setup() {
         orderRepository = mock(OrderRepository.class);
-        getOrdersService = new GetOrdersService(orderRepository);
+        getOrderService = new GetOrderService(orderRepository);
     }
 
     @Test
-    void list() {
-        List<Order> orders = List.of(Order.fake());
+    void item() {
+        Order order = Order.fake();
 
-        given(orderRepository.findAll()).willReturn(orders);
+        given(orderRepository.findById(1L))
+                .willReturn(Optional.of(order));
 
-        List<OrderListDto> orderDtos = getOrdersService.list();
+        OrderItemDto orderItemDto = getOrderService.item(1L);
 
-        assertThat(orderDtos).hasSize(1);
+        assertThat(orderItemDto).isNotNull();
     }
 }

@@ -1,5 +1,6 @@
 package com.zzezze.makaogift.models;
 
+import com.zzezze.makaogift.dtos.OrderItemDto;
 import com.zzezze.makaogift.dtos.OrderListDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,10 +52,16 @@ public class Order {
     }
 
     public static Order fake() {
-        return new Order(1L, "제조사", "상품이름", "이미지", 1L, 1000L, "받는 분 성함", "받는 분 주소", "받는 분께 보내는 메세지");
+        return new Order(1L, "제조사", "상품이름", "이미지", 1L, 1000L,
+                "받는 분 성함", "받는 분 주소", "받는 분께 보내는 메세지");
     }
 
     public OrderListDto toOrderListDto() {
         return new OrderListDto(id, receiver, image, maker, name);
+    }
+
+    public OrderItemDto toOrderItemDto() {
+        return new OrderItemDto(image, maker, name, quantity, createdAt,
+                receiver, address, message);
     }
 }

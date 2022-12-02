@@ -4,9 +4,11 @@ import com.zzezze.makaogift.models.Order;
 import com.zzezze.makaogift.models.Product;
 import com.zzezze.makaogift.repositories.OrderRepository;
 import com.zzezze.makaogift.repositories.ProductRepository;
+import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
 import com.zzezze.makaogift.services.PostOrderService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,15 +40,17 @@ class OrderControllerTest {
     private GetOrdersService getOrdersService;
 
     @MockBean
-    private ProductRepository productRepository;
+    private GetOrderService getOrderService;
 
+    @MockBean
+    private ProductRepository productRepository;
 
     @Test
     void list() throws Exception {
         Order order = Order.fake();
 
         given(getOrdersService.list())
-                .willReturn(List.of(order.toOrderResultDto()));
+                .willReturn(List.of(order.toOrderListDto()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/orders"))
                 .andExpect(status().isOk())
@@ -57,7 +61,20 @@ class OrderControllerTest {
         verify(getOrdersService).list();
     }
 
+    @Test
+    void item() throws Exception {
+        Order order = Order.fake();
 
+        given(getOrderService.item(1L))
+                .willReturn(order.toOrderItemDto());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        containsString("image")
+                ));
+    }
+    
     @Test
     void createOrder() throws Exception {
         given(productRepository.findById(1L))
@@ -66,7 +83,6 @@ class OrderControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{" +
-
                                 " \"productId\":\"1\"," +
                                 " \"quantity\":\"1\"," +
                                 " \"receiver\":\"receiver\"," +

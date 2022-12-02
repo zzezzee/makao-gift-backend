@@ -27,8 +27,7 @@ public class PostOrderService {
 
         Order order = new Order(
                 productId, product.getMaker(), product.getName(), product.getImage(),
-                quantity, totalPrice, receiver, address, message
-        );
+                quantity, totalPrice, receiver, address, message);
 
         orderRepository.save(order);
 

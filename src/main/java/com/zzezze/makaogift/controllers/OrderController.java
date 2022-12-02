@@ -1,13 +1,16 @@
 package com.zzezze.makaogift.controllers;
 
+import com.zzezze.makaogift.dtos.OrderItemDto;
 import com.zzezze.makaogift.dtos.OrderPostDto;
 import com.zzezze.makaogift.dtos.OrderPostResultDto;
 import com.zzezze.makaogift.dtos.OrderListDto;
 import com.zzezze.makaogift.dtos.OrdersDto;
+import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
 import com.zzezze.makaogift.services.PostOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +24,12 @@ import java.util.List;
 public class OrderController {
     private PostOrderService postOrderService;
     private GetOrdersService getOrdersService;
+    private GetOrderService getOrderService;
 
-    public OrderController(PostOrderService postOrderService, GetOrdersService getOrdersService) {
+    public OrderController(PostOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
         this.postOrderService = postOrderService;
         this.getOrdersService = getOrdersService;
+        this.getOrderService = getOrderService;
     }
 
     @GetMapping
@@ -33,6 +38,15 @@ public class OrderController {
         List<OrderListDto> orderListDto = getOrdersService.list();
 
         return new OrdersDto(orderListDto);
+    }
+
+    @GetMapping("{id}")
+    public OrderItemDto item(
+            @PathVariable Long id
+    ) {
+        OrderItemDto orderItemDto = getOrderService.item(id);
+
+        return orderItemDto;
     }
 
     @PostMapping
