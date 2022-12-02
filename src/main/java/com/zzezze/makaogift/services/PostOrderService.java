@@ -26,8 +26,8 @@ public class PostOrderService {
         // TODO: 잔액확인, 잔액 줄이기
 
         Order order = new Order(
-                product.getMaker(), product.getName(), product.getImage(),
-                totalPrice, receiver, address, message
+                productId, product.getMaker(), product.getName(), product.getImage(),
+                quantity, totalPrice, receiver, address, message
         );
 
         orderRepository.save(order);

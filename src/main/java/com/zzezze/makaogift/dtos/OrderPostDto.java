@@ -1,13 +1,13 @@
 package com.zzezze.makaogift.dtos;
 
-public class OrderDto {
+public class OrderPostDto {
     private Long productId;
     private Long quantity;
     private String receiver;
     private String address;
     private String message;
 
-    public OrderDto(Long productId, Long quantity, String receiver, String address, String message) {
+    public OrderPostDto(Long productId, Long quantity, String receiver, String address, String message) {
         this.productId = productId;
         this.quantity = quantity;
         this.receiver = receiver;
@@ -35,3 +35,4 @@ public class OrderDto {
         return message;
     }
 }
+
