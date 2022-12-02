@@ -1,9 +1,9 @@
 package com.zzezze.makaogift.dtos;
 
-public class OrderResultDto {
+public class OrderPostResultDto {
     private Long id;
 
-    public OrderResultDto(Long id) {
+    public OrderPostResultDto(Long id) {
         this.id = id;
     }
 
