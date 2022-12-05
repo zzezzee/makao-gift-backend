@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,9 +23,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    private PostOrderService postOrderService;
-    private GetOrdersService getOrdersService;
-    private GetOrderService getOrderService;
+    private final PostOrderService postOrderService;
+    private final GetOrdersService getOrdersService;
+    private final GetOrderService getOrderService;
 
     public OrderController(PostOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
         this.postOrderService = postOrderService;
@@ -34,8 +35,10 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public OrdersDto list() {
-        List<OrderListDto> orderListDto = getOrdersService.list();
+    public OrdersDto list(
+            @RequestAttribute("username") String username
+    ) {
+        List<OrderListDto> orderListDto = getOrdersService.list(username);
 
         return new OrdersDto(orderListDto);
     }
@@ -52,9 +55,11 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderPostResultDto create(
-            @RequestBody OrderPostDto orderPostDto
-            ) {
+            @RequestBody OrderPostDto orderPostDto,
+            @RequestAttribute("username") String username
+    ) {
         Long id = postOrderService.order(
+                username,
                 orderPostDto.getProductId(),
                 orderPostDto.getQuantity(),
                 orderPostDto.getReceiver(),

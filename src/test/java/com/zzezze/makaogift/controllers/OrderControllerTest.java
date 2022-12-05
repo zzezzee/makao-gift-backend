@@ -2,14 +2,13 @@ package com.zzezze.makaogift.controllers;
 
 import com.zzezze.makaogift.models.Order;
 import com.zzezze.makaogift.models.Product;
-import com.zzezze.makaogift.repositories.OrderRepository;
 import com.zzezze.makaogift.repositories.ProductRepository;
+import com.zzezze.makaogift.repositories.UserRepository;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
 import com.zzezze.makaogift.services.PostOrderService;
+import com.zzezze.makaogift.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,11 +43,18 @@ class OrderControllerTest {
     @MockBean
     private ProductRepository productRepository;
 
+    @MockBean
+    private UserRepository userRepository;
+
+    @SpyBean
+    private JwtUtil jwtUtil;
+
     @Test
     void list() throws Exception {
         Order order = Order.fake();
+        String username = "zzezze";
 
-        given(getOrdersService.list())
+        given(getOrdersService.list(username))
                 .willReturn(List.of(order.toOrderListDto()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/orders"))
@@ -58,7 +63,7 @@ class OrderControllerTest {
                         containsString("orders")
                 ));
 
-        verify(getOrdersService).list();
+        verify(getOrdersService).list(username);
     }
 
     @Test
