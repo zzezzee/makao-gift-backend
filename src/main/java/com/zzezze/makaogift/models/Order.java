@@ -12,12 +12,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ORDERTABLE")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
     private Long productId;
     private String maker;
     private String name;
@@ -34,8 +35,9 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long productId, String maker, String name, String image,
+    public Order(String username, Long productId, String maker, String name, String image,
                  Long quantity, Long totalPrice, String receiver, String address, String message) {
+        this.username = username;
         this.productId = productId;
         this.maker = maker;
         this.name = name;
@@ -52,7 +54,7 @@ public class Order {
     }
 
     public static Order fake() {
-        return new Order(1L, "제조사", "상품이름", "이미지", 1L, 1000L,
+        return new Order("zzezze", 1L, "제조사", "상품이름", "이미지", 1L, 1000L,
                 "받는 분 성함", "받는 분 주소", "받는 분께 보내는 메세지");
     }
 
@@ -61,7 +63,7 @@ public class Order {
     }
 
     public OrderItemDto toOrderItemDto() {
-        return new OrderItemDto(image, maker, name, quantity, createdAt,
+        return new OrderItemDto(image, maker, name, quantity, totalPrice, createdAt,
                 receiver, address, message);
     }
 }

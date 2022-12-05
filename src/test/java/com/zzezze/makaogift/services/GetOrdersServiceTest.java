@@ -25,10 +25,11 @@ class GetOrdersServiceTest {
     @Test
     void list() {
         List<Order> orders = List.of(Order.fake());
+        String username = "zzezze";
 
-        given(orderRepository.findAll()).willReturn(orders);
+        given(orderRepository.findAllByUsername(username)).willReturn(orders);
 
-        List<OrderListDto> orderDtos = getOrdersService.list();
+        List<OrderListDto> orderDtos = getOrdersService.list(username);
 
         assertThat(orderDtos).hasSize(1);
     }

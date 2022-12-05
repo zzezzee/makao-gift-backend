@@ -16,8 +16,8 @@ public class GetOrdersService {
         this.orderRepository = orderRepository;
     }
 
-    public List<OrderListDto> list() {
-        List<Order> orders = orderRepository.findAll();
+    public List<OrderListDto> list(String username) {
+        List<Order> orders = orderRepository.findAllByUsername(username);
 
         List<OrderListDto> ordersResultDto =
                 orders.stream()

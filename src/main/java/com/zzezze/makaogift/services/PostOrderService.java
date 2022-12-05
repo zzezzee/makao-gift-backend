@@ -1,32 +1,50 @@
 package com.zzezze.makaogift.services;
 
+import com.zzezze.makaogift.exceptions.OrderFailed;
 import com.zzezze.makaogift.exceptions.ProductNotFound;
+import com.zzezze.makaogift.exceptions.UserNotFound;
 import com.zzezze.makaogift.models.Order;
 import com.zzezze.makaogift.models.Product;
+import com.zzezze.makaogift.models.User;
 import com.zzezze.makaogift.repositories.OrderRepository;
 import com.zzezze.makaogift.repositories.ProductRepository;
+import com.zzezze.makaogift.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostOrderService {
-    private OrderRepository orderRepository;
-    private ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private UserRepository userRepository;
 
-    public PostOrderService(OrderRepository orderRepository, ProductRepository productRepository) {
+    public PostOrderService(OrderRepository orderRepository,
+                            ProductRepository productRepository,
+                            UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
-    public Long order(Long productId, Long quantity, String receiver,
+    public Long order(String username, Long productId, Long quantity, String receiver,
                       String address, String message) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFound());
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(ProductNotFound::new);
 
         Long totalPrice = product.getPrice() * quantity;
-        // TODO: 잔액확인, 잔액 줄이기
+
+        if(user.amount() < totalPrice){
+            throw new OrderFailed();
+        }
+
+        user.order(totalPrice);
 
         Order order = new Order(
-                productId, product.getMaker(), product.getName(), product.getImage(),
+                username, productId,
+                product.getMaker(), product.getName(), product.getImage(),
                 quantity, totalPrice, receiver, address, message);
 
         orderRepository.save(order);
