@@ -57,7 +57,11 @@ class OrderControllerTest {
         given(getOrdersService.list(username))
                 .willReturn(List.of(order.toOrderListDto()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/orders"))
+        String token = jwtUtil.encode(username);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders")
+                        .header("Authorization", "Bearer " + token)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         containsString("orders")
@@ -82,10 +86,19 @@ class OrderControllerTest {
     
     @Test
     void createOrder() throws Exception {
+        Order order = Order.fake();
+        String username = "zzezze";
+
+        given(getOrdersService.list(username))
+                .willReturn(List.of(order.toOrderListDto()));
+
+        String token = jwtUtil.encode(username);
+
         given(productRepository.findById(1L))
                 .willReturn(Optional.of(Product.fake()));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/orders")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{" +
                                 " \"productId\":\"1\"," +
