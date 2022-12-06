@@ -6,7 +6,9 @@ import com.zzezze.makaogift.exceptions.LoginFailed;
 import com.zzezze.makaogift.models.User;
 import com.zzezze.makaogift.services.LoginService;
 import com.zzezze.makaogift.utils.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ public class SessionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public LoginResultDto login(
-            @RequestBody LoginRequestDto loginRequestDto
+            @Valid @RequestBody LoginRequestDto loginRequestDto
     ) {
         User user = loginService.login(
                 loginRequestDto.getUsername(),
@@ -42,7 +44,7 @@ public class SessionController {
     @ExceptionHandler(LoginFailed.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String loginFailed() {
-        return "Login failed";
+        return "아이디 혹은 비밀번호가 맞지 않습니다";
     }
 }
 
