@@ -103,7 +103,7 @@ class OrderControllerTest {
                         .content("{" +
                                 " \"productId\":\"1\"," +
                                 " \"quantity\":\"1\"," +
-                                " \"receiver\":\"receiver\"," +
+                                " \"receiver\":\"받는사람\"," +
                                 " \"address\":\"address\"," +
                                 " \"message\":\"message\"" +
                                 "}")
