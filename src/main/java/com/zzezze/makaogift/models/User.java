@@ -26,6 +26,12 @@ public class User {
     public User() {
     }
 
+    public User(String name, String username, String encodedPassword) {
+        this.name = name;
+        this.username = username;
+        this.encodedPassword = encodedPassword;
+        this.amount = 500000L;
+    }
 
     public User(Long id, String name, String username, String encodedPassword, Long amount) {
         this.id = id;

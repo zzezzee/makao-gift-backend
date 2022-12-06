@@ -5,10 +5,12 @@ import com.zzezze.makaogift.dtos.OrderPostDto;
 import com.zzezze.makaogift.dtos.OrderPostResultDto;
 import com.zzezze.makaogift.dtos.OrderListDto;
 import com.zzezze.makaogift.dtos.OrdersDto;
+import com.zzezze.makaogift.exceptions.OrderFailed;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
 import com.zzezze.makaogift.services.PostOrderService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,11 +71,12 @@ public class OrderController {
 
         return new OrderPostResultDto(id);
     }
+
+    @ExceptionHandler(OrderFailed.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String orderFailed() {
+        return "Order failed";
+    }
 }
 
-// OrderDto -> post요청이 담겨 있음
-// OrderPostResultDto -> post 요청에 대한 응답
 
-
-// -> GET / orders 요청에 대한 응답 DTO -> OrdersDto(OrderListDtos)
-// -> GET / orders/{id} 요청에 대한 응답 DTO -> OrderDetailDto(세부정보)
