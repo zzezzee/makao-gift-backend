@@ -1,10 +1,15 @@
 package com.zzezze.makaogift.services;
 
 import com.zzezze.makaogift.dtos.ProductDto;
+import com.zzezze.makaogift.dtos.ProductsDto;
 import com.zzezze.makaogift.models.Product;
 import com.zzezze.makaogift.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -26,10 +31,13 @@ class GetProductsServiceTest {
     void list() {
         List<Product> products = List.of(Product.fake());
 
-        given(productRepository.findAll()).willReturn(products);
+        Sort sort = Sort.by("id");
+        Pageable pageable = PageRequest.of(0, 8, sort);
+        given(productRepository.findAll(pageable)).willReturn((Page<Product>) products);
 
-        List<ProductDto> productDtos = getProductsService.list();
 
-        assertThat(productDtos).hasSize(1);
+        ProductsDto productsDto = getProductsService.list(1);
+
+        assertThat(productsDto).isNotNull();
     }
 }

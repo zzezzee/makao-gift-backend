@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -24,10 +22,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ProductsDto list() {
-        List<ProductDto> productDtos = getProductsService.list();
+    public ProductsDto list(
+            @RequestParam(required = false, defaultValue = "1") Integer page
+    ) {
+        ProductsDto productsDto = getProductsService.list(page);
 
-        return new ProductsDto(productDtos);
+        return productsDto;
     }
 
     @GetMapping("/{id}")

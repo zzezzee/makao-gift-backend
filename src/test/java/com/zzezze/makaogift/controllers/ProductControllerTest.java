@@ -1,5 +1,6 @@
 package com.zzezze.makaogift.controllers;
 
+import com.zzezze.makaogift.dtos.ProductsDto;
 import com.zzezze.makaogift.models.Product;
 import com.zzezze.makaogift.services.GetProductService;
 import com.zzezze.makaogift.services.GetProductsService;
@@ -34,8 +35,8 @@ class ProductControllerTest {
     void list() throws Exception {
         Product product = Product.fake();
 
-        given(getProductsService.list())
-                .willReturn(List.of(product.toDto()));
+        given(getProductsService.list(1))
+                .willReturn(new ProductsDto(List.of(product.toDto()), 10L));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/products"))
                 .andExpect(status().isOk())
@@ -43,7 +44,7 @@ class ProductControllerTest {
                         containsString("products")
                 ));
 
-        verify(getProductsService).list();
+        verify(getProductsService).list(1);
     }
 
     @Test
