@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private GetUserService getUserService;
-    private CreateUserService createUserService;
+    private final GetUserService getUserService;
+    private final CreateUserService createUserService;
 
     public UserController(GetUserService getUserService, CreateUserService createUserService) {
         this.getUserService = getUserService;
