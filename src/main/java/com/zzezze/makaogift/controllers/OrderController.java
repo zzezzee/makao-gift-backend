@@ -8,7 +8,7 @@ import com.zzezze.makaogift.dtos.OrdersDto;
 import com.zzezze.makaogift.exceptions.OrderFailed;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
-import com.zzezze.makaogift.services.PostOrderService;
+import com.zzezze.makaogift.services.CreateOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +25,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    private final PostOrderService postOrderService;
+    private final CreateOrderService postOrderService;
     private final GetOrdersService getOrdersService;
     private final GetOrderService getOrderService;
 
-    public OrderController(PostOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
+    public OrderController(CreateOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
         this.postOrderService = postOrderService;
         this.getOrdersService = getOrdersService;
         this.getOrderService = getOrderService;

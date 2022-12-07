@@ -6,7 +6,7 @@ import com.zzezze.makaogift.repositories.ProductRepository;
 import com.zzezze.makaogift.repositories.UserRepository;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
-import com.zzezze.makaogift.services.PostOrderService;
+import com.zzezze.makaogift.services.CreateOrderService;
 import com.zzezze.makaogift.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class OrderControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PostOrderService postOrderService;
+    private CreateOrderService postOrderService;
 
     @MockBean
     private GetOrdersService getOrdersService;
