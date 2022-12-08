@@ -16,8 +16,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class PostOrderServiceTest {
-    private PostOrderService postOrderService;
+class CreateOrderServiceTest {
+    private CreateOrderService postOrderService;
     private OrderRepository orderRepository;
     private ProductRepository productRepository;
     private UserRepository userRepository;
@@ -27,7 +27,7 @@ class PostOrderServiceTest {
         orderRepository = mock(OrderRepository.class);
         productRepository = mock(ProductRepository.class);
         userRepository = mock(UserRepository.class);
-        postOrderService = new PostOrderService(orderRepository, productRepository, userRepository);
+        postOrderService = new CreateOrderService(orderRepository, productRepository, userRepository);
     }
 
     @Test

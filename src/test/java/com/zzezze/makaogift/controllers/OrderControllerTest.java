@@ -1,18 +1,22 @@
 package com.zzezze.makaogift.controllers;
 
+import com.zzezze.makaogift.dtos.OrdersDto;
 import com.zzezze.makaogift.models.Order;
 import com.zzezze.makaogift.models.Product;
 import com.zzezze.makaogift.repositories.ProductRepository;
 import com.zzezze.makaogift.repositories.UserRepository;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
-import com.zzezze.makaogift.services.PostOrderService;
+import com.zzezze.makaogift.services.CreateOrderService;
 import com.zzezze.makaogift.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,7 +36,7 @@ class OrderControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PostOrderService postOrderService;
+    private CreateOrderService postOrderService;
 
     @MockBean
     private GetOrdersService getOrdersService;
@@ -54,8 +58,8 @@ class OrderControllerTest {
         Order order = Order.fake();
         String username = "zzezze";
 
-        given(getOrdersService.list(username))
-                .willReturn(List.of(order.toOrderListDto()));
+        given(getOrdersService.list(username, 1))
+                .willReturn(new OrdersDto(List.of(order.toOrderListDto()), 10L));
 
         String token = jwtUtil.encode(username);
 
@@ -67,7 +71,7 @@ class OrderControllerTest {
                         containsString("orders")
                 ));
 
-        verify(getOrdersService).list(username);
+        verify(getOrdersService).list(username, 1);
     }
 
     @Test
@@ -89,8 +93,8 @@ class OrderControllerTest {
         Order order = Order.fake();
         String username = "zzezze";
 
-        given(getOrdersService.list(username))
-                .willReturn(List.of(order.toOrderListDto()));
+        given(getOrdersService.list(username, 1))
+                .willReturn(new OrdersDto(List.of(order.toOrderListDto()), 10L));
 
         String token = jwtUtil.encode(username);
 

@@ -8,7 +8,7 @@ import com.zzezze.makaogift.dtos.OrdersDto;
 import com.zzezze.makaogift.exceptions.OrderFailed;
 import com.zzezze.makaogift.services.GetOrderService;
 import com.zzezze.makaogift.services.GetOrdersService;
-import com.zzezze.makaogift.services.PostOrderService;
+import com.zzezze.makaogift.services.CreateOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,11 +26,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    private final PostOrderService postOrderService;
+    private final CreateOrderService postOrderService;
     private final GetOrdersService getOrdersService;
     private final GetOrderService getOrderService;
 
-    public OrderController(PostOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
+    public OrderController(CreateOrderService postOrderService, GetOrdersService getOrdersService, GetOrderService getOrderService) {
         this.postOrderService = postOrderService;
         this.getOrdersService = getOrdersService;
         this.getOrderService = getOrderService;
@@ -38,11 +39,14 @@ public class OrderController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public OrdersDto list(
-            @RequestAttribute("username") String username
-    ) {
-        List<OrderListDto> orderListDto = getOrdersService.list(username);
+            @RequestAttribute("username") String username,
+            @RequestParam(required = false, defaultValue = "1") Integer page
 
-        return new OrdersDto(orderListDto);
+    ) {
+//        List<OrderListDto> orderListDto = getOrdersService.list(username, page);
+        OrdersDto ordersDto = getOrdersService.list(username, page);
+
+        return ordersDto;
     }
 
     @GetMapping("{id}")

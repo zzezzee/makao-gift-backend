@@ -29,12 +29,12 @@ class GetProductsServiceTest {
 
     @Test
     void list() {
-        List<Product> products = List.of(Product.fake());
+        Page<Product> products = Page.empty();
 
         Sort sort = Sort.by("id");
         Pageable pageable = PageRequest.of(0, 8, sort);
-        given(productRepository.findAll(pageable)).willReturn((Page<Product>) products);
 
+        given(productRepository.findAll(pageable)).willReturn(products);
 
         ProductsDto productsDto = getProductsService.list(1);
 
