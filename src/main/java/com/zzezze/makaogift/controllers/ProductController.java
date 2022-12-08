@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private GetProductsService getProductsService;
-    private GetProductService getProductService;
+    private final GetProductsService getProductsService;
+    private final GetProductService getProductService;
 
     public ProductController(GetProductsService getProductsService, GetProductService getProductService) {
         this.getProductsService = getProductsService;

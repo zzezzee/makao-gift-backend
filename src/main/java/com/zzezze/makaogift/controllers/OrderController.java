@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,11 +39,14 @@ public class OrderController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public OrdersDto list(
-            @RequestAttribute("username") String username
-    ) {
-        List<OrderListDto> orderListDto = getOrdersService.list(username);
+            @RequestAttribute("username") String username,
+            @RequestParam(required = false, defaultValue = "1") Integer page
 
-        return new OrdersDto(orderListDto);
+    ) {
+//        List<OrderListDto> orderListDto = getOrdersService.list(username, page);
+        OrdersDto ordersDto = getOrdersService.list(username, page);
+
+        return ordersDto;
     }
 
     @GetMapping("{id}")
